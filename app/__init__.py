@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from starlette.responses import FileResponse
 
 from app.core.exceptions import SettingNotFound
 from app.core.init_app import (
@@ -31,7 +33,10 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
-
+app.mount("/static", StaticFiles(directory="static"), name="static")
+@app.get("/")
+async def get_index():
+    return FileResponse("static/index.html")
 
 @app.on_event("startup")
 async def startup_event():

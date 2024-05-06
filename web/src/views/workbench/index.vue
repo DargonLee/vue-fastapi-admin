@@ -18,39 +18,49 @@
         </div>
       </n-card>
 
-      <n-card
-        :title="$t('views.workbench.label_project')"
-        size="small"
-        :segmented="true"
-        mt-15
-        rounded-10
-      >
-        <template #header-extra>
-          <n-button text type="primary">{{ $t('views.workbench.label_more') }}</n-button>
+      <CommonPage show-footer title="ABM列表">
+        <template #action>
+          <div>
+            <n-upload action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f" :default-upload="false"
+              @change="handleChange">
+              <NButton v-permission="'post/api/v1/menu/create'" type="primary">
+                <TheIcon icon="material-symbols:add" :size="18" class="mr-5" />导入文件
+              </NButton>
+            </n-upload>
+          </div>
         </template>
-        <div flex flex-wrap justify-between>
-          <n-card
-            v-for="i in 9"
-            :key="i"
-            class="mb-10 mt-10 w-300 cursor-pointer"
-            hover:card-shadow
-            title="Vue FastAPI Admin"
-            size="small"
-          >
-            <p op-60>{{ dummyText }}</p>
-          </n-card>
-        </div>
-      </n-card>
+
+        <!-- 表格 -->
+        <CrudTable ref="$table" :columns="columns" :get-data="api.getFiles">
+          <template #queryBar>
+            <QueryBarItem label="名称" :label-width="40">
+              <NInput v-model:value="queryItems.username" clearable type="text" placeholder="请输入用户名称"
+                @keypress.enter="$table?.handleSearch()" />
+            </QueryBarItem>
+            <QueryBarItem label="邮箱" :label-width="40">
+              <NInput v-model:value="queryItems.email" clearable type="text" placeholder="请输入邮箱"
+                @keypress.enter="$table?.handleSearch()" />
+            </QueryBarItem>
+          </template>
+        </CrudTable>
+      </CommonPage>
+
     </div>
   </AppPage>
 </template>
 
 <script setup>
+import api from '@/api'
+import { h, onMounted, ref, resolveDirective, withDirectives } from 'vue'
+import { NButton, NTag, NInput } from 'naive-ui'
+import { renderIcon } from '@/utils'
 import { useUserStore } from '@/store'
 import { useI18n } from 'vue-i18n'
-
-const dummyText = '一个基于 Vue3.0、FastAPI、Naive UI 的轻量级后台管理模板'
+import { useMessage } from 'naive-ui'
+import CrudTable from '@/components/table/CrudTable.vue'
+const message = useMessage()
 const { t } = useI18n({ useScope: 'global' })
+const dummyText = '一个基于 Vue3.0、FastAPI、Naive UI 的轻量级后台管理模板'
 
 const statisticData = computed(() => [
   {
@@ -70,5 +80,106 @@ const statisticData = computed(() => [
   },
 ])
 
+async function handleChange(options) {
+  console.log(options)
+  let formData = new FormData();
+  formData.append("file", options.file.file);
+  formData.append("tpye", options.file.tpye);
+  console.log(formData)
+  await api
+    .uploadFile("abm_excel", formData)
+    .then((res) => {
+      message.success(res.msg)
+    })
+    .catch(() => {
+    })
+}
 const userStore = useUserStore()
+
+
+const $table = ref(null)
+const queryItems = ref({})
+const vPermission = resolveDirective('permission')
+onMounted(() => {
+  $table.value?.handleSearch()
+})
+const columns = [
+  {
+    title: 'ID',
+    key: 'id',
+    width: 'auto',
+    align: 'center',
+    ellipsis: { tooltip: true },
+  },
+  {
+    title: '购买者',
+    key: 'username',
+    align: 'center',
+    width: 'auto',
+    ellipsis: { tooltip: true },
+  },
+  {
+    title: '创建时间',
+    key: 'created_at',
+    width: 'auto',
+    align: 'center',
+    ellipsis: { tooltip: true },
+  },
+  {
+    title: '安装时间',
+    key: 'installed_at',
+    width: 'auto',
+    align: 'center',
+    ellipsis: { tooltip: true },
+  },
+  {
+    title: '状态',
+    key: 'is_active',
+    width: 'auto',
+    align: 'center',
+    ellipsis: { tooltip: true },
+    render(row) {
+      return h(
+        NTag,
+        { type: row.is_active ? 'success' : 'info', style: { margin: '2px 3px' } },
+        { default: () => (row.is_active ? '未安装' : '已安装') }
+      )
+    },
+  },
+  {
+    title: '兑换码',
+    key: 'abm_code',
+    width: 'auto',
+    align: 'center',
+    ellipsis: { tooltip: true },
+  },
+  {
+    title: '二维码',
+    key: 'abm_link',
+    width: 'auto',
+    align: 'center',
+    fixed: 'right',
+    render(row) {
+      return [
+        withDirectives(
+          h(
+            NButton,
+            {
+              size: 'small',
+              type: 'primary',
+              style: 'margin-right: 8px;',
+              onClick: () => {
+              },
+            },
+            {
+              default: () => '查看',
+              icon: renderIcon('material-symbols:edit', { size: 16 }),
+            }
+          ),
+          [[vPermission, 'post/api/v1/file/update']]
+        )
+      ]
+    },
+  },
+]
 </script>

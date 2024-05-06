@@ -2,7 +2,7 @@ from tortoise import fields
 
 from app.schemas.menus import MenuType
 
-from .base import BaseModel, TimestampMixin
+from .base import BaseModel, TimestampMixin, AbmFileTimestampMixin
 from .enums import MethodType
 
 
@@ -72,3 +72,13 @@ class Dept(BaseModel, TimestampMixin):
 
     class Meta:
         table = "dept"
+
+
+class AbmExcelFile(BaseModel, AbmFileTimestampMixin):
+    username = fields.CharField(max_length=80, description="用户名称")
+    is_active = fields.BooleanField(default=True, description="是否可用")
+    abm_link = fields.CharField(max_length=255, description="下载链接")
+    abm_code = fields.CharField(max_length=15, description="兑换码")
+
+    class Meta:
+        table = "abm_file"

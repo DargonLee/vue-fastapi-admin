@@ -38,8 +38,11 @@ const {
   refresh: () => $table.value?.handleSearch(),
 })
 
+const roleOption = ref([])
+
 onMounted(() => {
   $table.value?.handleSearch()
+  api.getRoleList({ page: 1, page_size: 9999 }).then((res) => (roleOption.value = res.data))
 })
 
 async function handleRefreshApi() {

@@ -6,6 +6,10 @@ export default {
   getUserMenu: () => request.get('/base/usermenu'),
   getUserApi: () => request.get('/base/userapi'),
   // profile
+  uploadFile: (type_model, data) =>
+    request.post(`/base/uploadfile?type_model=${type_model}`, data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    }),
   updatePassword: (data = {}) => request.post('/base/update_password', data),
   // users
   getUserList: (params = {}) => request.get('/user/list', { params }),
@@ -31,4 +35,7 @@ export default {
   updateApi: (data = {}) => request.post('/api/update', data),
   deleteApi: (params = {}) => request.delete('/api/delete', { params }),
   refreshApi: (data = {}) => request.post('/api/refresh', data),
+  // files
+  getFiles: (params = {}) => request.get('/file/list', { params }),
+  updateFile: (data = {}) => request.post('/file/update', data),
 }

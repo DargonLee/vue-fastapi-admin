@@ -1,17 +1,19 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
-from fastapi import APIRouter
-
+from fastapi import APIRouter, UploadFile, BackgroundTasks
+from app.controllers.file import file_controller
 from app.controllers.user import UserController, user_controller
 from app.core.ctx import CTX_USER_ID
 from app.core.dependency import DependAuth
-from app.models.admin import Api, Menu, Role, User
+from app.models.admin import Api, Menu, Role, User, AbmExcelFile
 from app.schemas.base import Fail, Success
 from app.schemas.login import *
 from app.schemas.users import UpdatePassword
+from app.schemas.file import FileModelName
 from app.settings import settings
 from app.utils.jwt import create_access_token
 from app.utils.password import get_password_hash, verify_password
+from app.utils.file import parse_abm_excel_with_path, save_excel_file
 
 router = APIRouter()
 
@@ -101,3 +103,19 @@ async def update_user_password(req_in: UpdatePassword):
     user.password = get_password_hash(req_in.new_password)
     await user.save()
     return Success(msg="修改成功")
+
+
+@router.post("/uploadfile/", summary="上传文件")
+async def create_upload_file(file: UploadFile, background_tasks: BackgroundTasks,
+                             type_model: FileModelName = FileModelName.abm_excel):
+    file_path = await save_excel_file(file)
+    if file_path is None:
+        return Fail(msg="文件创建失败");
+
+    files = await parse_abm_excel_with_path(file_path)
+    if len(files) == 0:
+        return Fail(msg="文件读取失败");
+
+    await file_controller.abm_bulk_create(files)
+
+    return Success(msg="文件上传成功", data={"file": file.filename})

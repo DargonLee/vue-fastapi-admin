@@ -43,3 +43,8 @@ class UUIDModel:
 class TimestampMixin:
     created_at = fields.DatetimeField(auto_now_add=True)
     updated_at = fields.DatetimeField(auto_now=True)
+
+
+class AbmFileTimestampMixin:
+    created_at = fields.DatetimeField(auto_now_add=True)
+    installed_at = fields.DatetimeField(auto_now=True)

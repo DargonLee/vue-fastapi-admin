@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/mizhexiaoxiao/vue-fastapi-admin">
-    <img alt="Vue FastAPI Admin Logo" width="200" src="https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/logo.svg">
+    <img alt="Vue FastAPI Admin Logo" width="200" src="https://gitee.com/mizhexiaoxiao/vue-fastapi-admin/raw/main/deploy/sample-picture/logo.svg">
   </a>
 </p>
 
@@ -24,25 +24,25 @@
 
 ### 登录页
 
-![image](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/login.jpg)
+![image](https://gitee.com/mizhexiaoxiao/vue-fastapi-admin/raw/main/deploy/sample-picture/login.jpg)
 ### 工作台
 
-![image](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/workbench.jpg)
+![image](https://gitee.com/mizhexiaoxiao/vue-fastapi-admin/raw/main/deploy/sample-picture/workbench.jpg)
 
 ### 用户管理
 
-![image](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/user.jpg)
+![image](https://gitee.com/mizhexiaoxiao/vue-fastapi-admin/raw/main/deploy/sample-picture/user.jpg)
 ### 角色管理
 
-![image](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/role.jpg)
+![image](https://gitee.com/mizhexiaoxiao/vue-fastapi-admin/raw/main/deploy/sample-picture/role.jpg)
 
 ### 菜单管理
 
-![image](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/menu.jpg)
+![image](https://gitee.com/mizhexiaoxiao/vue-fastapi-admin/raw/main/deploy/sample-picture/menu.jpg)
 
 ### API管理
 
-![image](https://github.com/mizhexiaoxiao/vue-fastapi-admin/blob/main/deploy/sample-picture/api.jpg)
+![image](https://gitee.com/mizhexiaoxiao/vue-fastapi-admin/raw/main/deploy/sample-picture/api.jpg)
 
 ### 快速开始
 #### 方法一：dockerhub拉取镜像
@@ -87,6 +87,30 @@ password：123456
 启动项目需要以下环境：
 - Python 3.11
 - [Poetry](https://python-poetry.org/docs/#installing-with-the-official-installer)
+
+##### 安装`Peotry`
+
+1. 安装
+
+```shell
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+2. 添加环境变量
+
+```shell
+export PATH=$HOME/Library/Application Support/pypoetry/venv/bin/poetry:$PATH
+```
+
+3. 使用
+
+```shell
+poetry --version
+```
+
+
+
+##### 使用`Poetry`
 
 1. 创建虚拟环境
 ```sh
@@ -194,4 +218,4 @@ pnpm dev
 
 ### Visitors Count
 
-<img align="left" src = "https://profile-counter.glitch.me/vue-fastapi-admin/count.svg" alt="Loading">
+![image](https://gitee.com/mizhexiaoxiao/vue-fastapi-admin/raw/main/deploy/sample-picture/group.jpg)
